@@ -1,0 +1,19 @@
+Fragen ans Backend:
+    * Warum wird nicht direkt Bildurl geliefert --> Anders doppelte Anfrage an API
+    * Wie muss Objekt aussehen, welches zum Erstellen von Inseraten an API gesendet wird
+    * Es wäre sehr vorteilhaft, die API baldmöglichst zu deployen, sodass wir immer mit der selben Version arbeiten
+        * Gerade auch wegen den Bildern, wenn diese nicht auf einem separaten Fileserver gespeichert werden
+
+Fragen ins Plenum:
+    * Wie siehts bei der Suchmaschinenoptimierung aus? Soll jedes Inserat indexiert werden oder bloß Kategorieseiten
+    * Welche Seiten neben dem eigentlichen Shop sollen angeboten werden?
+        * Wie wird Navigationsleiste aufgebaut?
+            - Home
+            - Gesuche
+            - Inserate
+            - Eigenes Profil
+    * Welche Filter gibt es?
+        - Umkreissuche
+    * In wie weit sollen die Inhalte auf der Webseite, wie z.B. Lexikon über eine Benutzeroberfläche für Administratoren gepflegt werden können
+    * Strings komplett in konstanten auslagern
+        --> Stichwort: i18n-files
