@@ -1,6 +1,9 @@
-import React from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Navbar, Container, Nav, Modal, Button } from 'react-bootstrap'
 const Navigation = () => {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleClose = () => setShowModal(false)
   return (
     <>
       <Navbar bg='light' variant='light'>
@@ -16,12 +19,38 @@ const Navigation = () => {
               <i className='far fa-user pe-2'></i>
               Sign In
             </Nav.Link>
-            <Nav.Link href=''>
-              <i className='fas fa-user-edit pe-2'></i>Sign Up
+            <Nav.Link
+              href=''
+              onClick={() => {
+                setShowModal(true)
+              }}
+            >
+              <i className='fas fa-user-edit pe-2'></i>Registrieren
             </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
+
+      <Modal
+        show={showModal}
+        onHide={handleClose}
+        size='lg'
+        backdrop='static'
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Registrieren</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleClose}>
+            Abbrechen
+          </Button>
+          <Button variant='primary' onClick={handleClose}>
+            Jetzt registrieren
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
