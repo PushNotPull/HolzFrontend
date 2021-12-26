@@ -5,38 +5,61 @@ import axios from 'axios'
 import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { Loader } from '@googlemaps/js-api-loader'
 import Recommendations from '../../components/Recommendations'
+import ImageGallery from 'react-image-gallery'
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 const productDetail = ({ productDetail, API_KEY, recommendations }) => {
   const router = useRouter()
   const productId = router.query._id
+
+  const images = [
+    {
+      original:
+        'https://www.baumpflegeportal.de/wp-content/uploads/2016/05/160509_Starke-Baumtypen_Eiche-im-Seidengewand_02.jpg',
+      thumbnail:
+        'https://www.baumpflegeportal.de/wp-content/uploads/2016/05/160509_Starke-Baumtypen_Eiche-im-Seidengewand_02.jpg',
+    },
+    {
+      original: 'https://cdn.energie-tipp.de/uploads/2020/04/7223970-image.jpg',
+      thumbnail:
+        'https://cdn.energie-tipp.de/uploads/2020/04/7223970-image.jpg',
+    },
+    {
+      original:
+        'https://bilder.t-online.de/b/91/04/74/62/id_91047462/343h/c_raw/tid_da/baum-des-jahres-2022-rotbuche-fagus-sylvatica-.jpg',
+      thumbnail:
+        'https://bilder.t-online.de/b/91/04/74/62/id_91047462/343h/c_raw/tid_da/baum-des-jahres-2022-rotbuche-fagus-sylvatica-.jpg',
+    },
+  ]
 
   productDetail = JSON.parse(productDetail)
   recommendations = JSON.parse(recommendations)
   let map
 
   useEffect(() => {
-    // const loader = new Loader({
-    //   apiKey: API_KEY,
-    //   version: 'weekly',
-    // })
-    // loader.load().then(() => {
-    //   map = new google.maps.Map(document.getElementById('map'), {
-    //     center: {
-    //       lat: productDetail.treeDetail.location.coordinates[0],
-    //       lng: productDetail.treeDetail.location.coordinates[0],
-    //     },
-    //     zoom: 8,
-    //   })
-    // })
+    const loader = new Loader({
+      apiKey: API_KEY,
+      version: 'weekly',
+    })
+    loader.load().then(() => {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+          lat: productDetail.treeDetail.location.coordinates[0],
+          lng: productDetail.treeDetail.location.coordinates[0],
+        },
+        zoom: 8,
+      })
+    })
   }, [])
   return (
     <Layout>
       <Row className='mt-3'>
         <Col md={6}>
-          <img
-            src='https://bilder.t-online.de/b/91/04/74/62/id_91047462/343h/c_raw/tid_da/baum-des-jahres-2022-rotbuche-fagus-sylvatica-.jpg'
-            alt={productDetail.pictures.title}
-            className='w-100'
+          <ImageGallery
+            items={images}
+            showPlayButton={false}
+            showFullscreenButton={false}
+            lazyLoad={true}
           />
         </Col>
         <Col md={1}></Col>
