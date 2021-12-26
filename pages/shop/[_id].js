@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import axios from 'axios'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { Loader } from '@googlemaps/js-api-loader'
 
-const productDetail = ({ productDetail }) => {
+const productDetail = ({ productDetail, API_KEY }) => {
   const router = useRouter()
   const productId = router.query._id
 
@@ -13,20 +13,19 @@ const productDetail = ({ productDetail }) => {
   let map
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: 'AIzaSyAuYtvb3Lzs5TsWwXCk2FzxFr2vwbLYY0Y',
-      version: 'weekly',
-    })
-
-    loader.load().then(() => {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-          lat: productDetail.treeDetail.location.coordinates[0],
-          lng: productDetail.treeDetail.location.coordinates[0],
-        },
-        zoom: 8,
-      })
-    })
+    // const loader = new Loader({
+    //   apiKey: API_KEY,
+    //   version: 'weekly',
+    // })
+    // loader.load().then(() => {
+    //   map = new google.maps.Map(document.getElementById('map'), {
+    //     center: {
+    //       lat: productDetail.treeDetail.location.coordinates[0],
+    //       lng: productDetail.treeDetail.location.coordinates[0],
+    //     },
+    //     zoom: 8,
+    //   })
+    // })
   }, [])
   return (
     <Layout>
@@ -55,9 +54,52 @@ const productDetail = ({ productDetail }) => {
             <small>zzgl. 19% gesetzl. MwSt.</small>
           </div>
           <p>{productDetail.description}</p>
-          <Button variant='dark' size='lg' className='w-100'>
-            Jetzt kontaktieren
-          </Button>
+          <div className='d-flex align-items-center'>
+            <Button variant='dark' size='lg' className='w-100'>
+              Jetzt kontaktieren
+            </Button>
+            <i className='far fa-heart ps-3 pointer'></i>
+          </div>
+
+          <div className='my-3'>
+            <b className='text-uppercase'>Allgemein</b>
+            <ul>
+              <li>
+                Bereits gefällt:{' '}
+                {productDetail.treeDetail.fellingState.felled ? 'Ja' : 'Nein'}
+              </li>
+
+              {productDetail.treeDetail.fellingState.felled ? (
+                <li>
+                  Fälldatum: {productDetail.treeDetail.fellingState.fellingDate}
+                </li>
+              ) : (
+                ''
+              )}
+            </ul>
+
+            <b className='text-uppercase'>Abmessungen</b>
+            <ul>
+              <li>Höhe: {productDetail.treeDetail.dimensions.height} Meter</li>
+              <li>
+                Umfang: {productDetail.treeDetail.dimensions.circumference}{' '}
+                Meter
+              </li>
+            </ul>
+
+            <b className='text-uppercase'>Details</b>
+            <ul>
+              <li>
+                Fällzeitraum vorhanden:{' '}
+                {productDetail.treeDetail.timeWindow.restricted ? 'Ja' : 'Nein'}
+              </li>
+              {productDetail.treeDetail.timeWindow.restricted ? (
+                <li>{`${productDetail.treeDetail.timeWindow.from} - ${productDetail.treeDetail.timeWindow.till}`}</li>
+              ) : (
+                ''
+              )}
+            </ul>
+          </div>
 
           <div
             id='map'
@@ -81,5 +123,5 @@ export async function getServerSideProps(context) {
 
   productDetail = JSON.stringify(productDetail.data)
 
-  return { props: { productDetail } }
+  return { props: { productDetail, API_KEY: process.env.GOOGLE_API_KEY } }
 }
