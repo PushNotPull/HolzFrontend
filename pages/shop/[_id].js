@@ -4,12 +4,14 @@ import Layout from '../../components/Layout'
 import axios from 'axios'
 import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { Loader } from '@googlemaps/js-api-loader'
+import Recommendations from '../../components/Recommendations'
 
-const productDetail = ({ productDetail, API_KEY }) => {
+const productDetail = ({ productDetail, API_KEY, recommendations }) => {
   const router = useRouter()
   const productId = router.query._id
 
   productDetail = JSON.parse(productDetail)
+  recommendations = JSON.parse(recommendations)
   let map
 
   useEffect(() => {
@@ -108,6 +110,7 @@ const productDetail = ({ productDetail, API_KEY }) => {
           ></div>
         </Col>
       </Row>
+      <Recommendations recommendations={recommendations} />
     </Layout>
   )
 }
@@ -120,8 +123,17 @@ export async function getServerSideProps(context) {
   let productDetail = await axios.get(
     `http://localhost:4000/offer/${productId}`
   )
+  let recommendations = await axios.get('http://localhost:4000/offer')
 
   productDetail = JSON.stringify(productDetail.data)
 
-  return { props: { productDetail, API_KEY: process.env.GOOGLE_API_KEY } }
+  recommendations = JSON.stringify(recommendations.data)
+
+  return {
+    props: {
+      productDetail,
+      API_KEY: process.env.GOOGLE_API_KEY,
+      recommendations,
+    },
+  }
 }
